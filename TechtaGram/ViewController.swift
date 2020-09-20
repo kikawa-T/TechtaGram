@@ -9,9 +9,10 @@ import UIKit
 
 class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
+    //
     @IBOutlet var cameraImageView: UIImageView!
     
-    var orinalImage: UIImage!
+    var originalImage: UIImage!
     
     var filter: CIFilter!
 
@@ -19,7 +20,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         super.viewDidLoad()
         // Do any additional setup after loading the view.
     }
-    
+    //写真を開く撮る閉じる
     @IBAction func takePhoto() {
         if UIImagePickerController.isSourceTypeAvailable(.camera) {
             
@@ -40,27 +41,27 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         
         cameraImageView.image = info[.editedImage] as? UIImage
         
-        orinalImage = cameraImageView.image
+        originalImage = cameraImageView.image
         
         dismiss(animated: true, completion: nil)
     }
-    
+    //保存
     @IBAction func savePhoto() {
         UIImageWriteToSavedPhotosAlbum(cameraImageView.image!, nil, nil, nil)
     }
-    
+    //filter処理
     @IBAction func colorFilter() {
         
-        let filterImage: CIImage = CIImage(image: orinalImage)!
+        let filterImage: CIImage = CIImage(image: originalImage)!
         
         filter = CIFilter(name: "CIColorControls")!
         filter.setValue(filterImage, forKey: kCIInputImageKey)
         
-        filter.setValue(1.0, forKey: "inputsaturation")
+        filter.setValue(1.0, forKey: "inputSaturation")
         
-        filter.setValue(0.5, forKey: "inputbrightness")
+        filter.setValue(0.5, forKey: "inputBrightness")
         
-        filter.setValue(2.5, forKey: "inputcontrast")
+        filter.setValue(2.5, forKey: "inputContrast")
         
         let ctx = CIContext(options: nil)
         
@@ -68,7 +69,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         
         cameraImageView.image = UIImage(cgImage: cgImage!)
     }
-    
+    //photoライブラリを開く
     @IBAction func openAlbum() {
         if UIImagePickerController.isSourceTypeAvailable(.photoLibrary) {
             let picker = UIImagePickerController()
@@ -80,7 +81,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             present(picker, animated: true, completion: nil)
         }
     }
-    
+    //UIactivityを使ってSNSなどを開く
     @IBAction func snsPhoto() {
         
         let shareText = "写真いえい"
